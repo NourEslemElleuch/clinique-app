@@ -1,0 +1,39 @@
+<div class="modal-header">
+  <h5 class="modal-title">
+    <i class="bi bi-{{ specialiteId() ? 'pencil-square' : 'plus-circle' }}"></i>
+    {{ specialiteId() ? 'Modifier' : 'Ajouter' }} spécialité
+  </h5>
+  <button type="button" class="btn-close" (click)="close()" aria-label="Fermer"></button>
+</div>
+
+<div class="modal-body">
+  <form [formGroup]="form">
+    <!-- Nom -->
+    <div class="mb-3">
+      <label class="form-label">Nom spécialité <span class="text-danger">*</span></label>
+      <input type="text" class="form-control" formControlName="nom" 
+             [class.is-invalid]="form.get('nom')?.invalid && form.get('nom')?.touched">
+      <div class="invalid-feedback" *ngIf="form.get('nom')?.hasError('required')">
+        Nom requis
+      </div>
+    </div>
+
+    <!-- Description -->
+    <div class="mb-3">
+      <label class="form-label">Description <span class="text-danger">*</span></label>
+      <textarea class="form-control" rows="4" formControlName="description"
+                [class.is-invalid]="form.get('description')?.invalid && form.get('description')?.touched"></textarea>
+      <div class="invalid-feedback" *ngIf="form.get('description')?.hasError('required')">
+        Description requise
+      </div>
+    </div>
+  </form>
+</div>
+
+<div class="modal-footer">
+  <button type="button" class="btn btn-secondary" (click)="close()">Annuler</button>
+  <button type="button" class="btn btn-primary" (click)="submit()" [disabled]="submitting">
+    <span *ngIf="submitting" class="spinner-border spinner-border-sm me-2"></span>
+    {{ specialiteId() ? 'Modifier' : 'Ajouter' }}
+  </button>
+</div>

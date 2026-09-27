@@ -1,0 +1,68 @@
+<div class="container-fluid px-4 py-4">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2><i class="bi bi-tags"></i> Liste des spécialités</h2>
+    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#specialiteModal">
+      <i class="bi bi-plus-circle"></i> Ajouter spécialité
+    </button>
+  </div>
+
+  <!-- Recherche + Tri -->
+  <div class="row mb-4">
+    <div class="col-md-6">
+      <div class="input-group">
+        <span class="input-group-text"><i class="bi bi-search"></i></span>
+        <input type="text" class="form-control" placeholder="Rechercher spécialité..."
+               [(ngModel)]="recherche">
+      </div>
+    </div>
+    <div class="col-md-3 mt-2 mt-md-0">
+      <button class="btn btn-outline-secondary w-100" (click)="toggleSort()">
+        <i class="bi" [class.bi-sort-alpha-down]="sortAsc" [class.bi-sort-alpha-up]="!sortAsc"></i>
+        Trier {{ sortAsc ? 'A → Z' : 'Z → A' }}
+      </button>
+    </div>
+  </div>
+
+  <!-- Loader -->
+  <div *ngIf="loading" class="text-center py-5">
+    <div class="spinner-border" role="status">
+      <span class="visually-hidden">Chargement...</span>
+    </div>
+  </div>
+
+  <!-- Tableau -->
+  <div *ngIf="!loading" class="table-responsive">
+    <table class="table table-hover">
+      <thead class="table-dark">
+        <tr>
+          <th>Nom</th>
+          <th>Description</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let specialite of filteredSpecialites">
+          <td>{{ specialite.nom }}</td>
+          <td>{{ specialite.description }}</td>
+          <td>
+            <button class="btn btn-sm btn-outline-primary me-1"
+                    data-bs-toggle="modal" data-bs-target="#specialiteModal">
+              <i class="bi bi-pencil"></i>
+            </button>
+            <button class="btn btn-sm btn-outline-danger" (click)="delete(specialite.id!, specialite.nom!)">
+              <i class="bi bi-trash"></i>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div *ngIf="filteredSpecialites.length === 0" class="text-center py-5 text-muted">
+      <i class="bi bi-inbox display-1 opacity-25"></i>
+      <p>Aucune spécialité trouvée</p>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<app-specialite-form></app-specialite-form>

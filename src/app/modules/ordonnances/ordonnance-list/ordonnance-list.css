@@ -1,0 +1,12 @@
+/* Ordonnance List Styles */
+app-ordonnance-list {
+  padding: 1rem;
+}
+
+.table {
+  margin-top: 1rem;
+}
+
+.search-input {
+  margin-bottom: 1rem;
+}

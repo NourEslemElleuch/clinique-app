@@ -1,0 +1,20 @@
+/* Similar to specialite-form.css */
+.modal-content {
+  border-radius: 15px;
+  border: none;
+  box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.15);
+}
+
+.modal-header {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border-radius: 15px 15px 0 0;
+}
+
+.form-label {
+  font-weight: 500;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}

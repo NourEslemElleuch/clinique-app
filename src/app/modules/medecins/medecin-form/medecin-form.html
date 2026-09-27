@@ -1,0 +1,51 @@
+<div class="modal-header">
+  <h5 class="modal-title">
+    <i class="bi bi-{{ medecinId() ? 'pencil-square' : 'plus-circle' }}"></i>
+    {{ medecinId() ? 'Modifier' : 'Ajouter' }} médecin
+  </h5>
+  <button type="button" class="btn-close" (click)="close()" aria-label="Fermer"></button>
+</div>
+
+<div class="modal-body">
+  <form [formGroup]="form">
+    <div class="row">
+      <div class="col-md-6 mb-3">
+        <label class="form-label">Nom <span class="text-danger">*</span></label>
+        <input type="text" class="form-control" formControlName="nom">
+      </div>
+      <div class="col-md-6 mb-3">
+        <label class="form-label">Prénom <span class="text-danger">*</span></label>
+        <input type="text" class="form-control" formControlName="prenom">
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6 mb-3">
+        <label class="form-label">Email <span class="text-danger">*</span></label>
+        <input type="email" class="form-control" formControlName="email">
+      </div>
+      <div class="col-md-6 mb-3">
+        <label class="form-label">Téléphone <span class="text-danger">*</span></label>
+        <input type="tel" class="form-control" formControlName="telephone">
+      </div>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Spécialité <span class="text-danger">*</span></label>
+      <select class="form-select" formControlName="specialiteId">
+        <option value="">Choisir spécialité...</option>
+        <option *ngFor="let specialite of specialites()" [value]="specialite.id!">
+          {{ specialite.nom }}
+        </option>
+      </select>
+    </div>
+  </form>
+</div>
+
+<div class="modal-footer">
+  <button type="button" class="btn btn-secondary" (click)="close()">Annuler</button>
+  <button type="button" class="btn btn-primary" (click)="submit()" [disabled]="submitting">
+    <span *ngIf="submitting" class="spinner-border spinner-border-sm me-2"></span>
+    {{ medecinId() ? 'Modifier' : 'Ajouter' }}
+  </button>
+</div>

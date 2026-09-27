@@ -1,0 +1,149 @@
+<div class="container-fluid px-4 py-4">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2><i class="bi bi-calendar-check"></i> Rendez-vous</h2>
+    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#rdvModal" (click)="openModal()">
+      <i class="bi bi-plus-circle"></i> Ajouter RDV
+    </button>
+  </div>
+
+  <!-- Recherche -->
+  <div class="row mb-4">
+    <div class="col-md-6">
+      <div class="input-group">
+        <span class="input-group-text"><i class="bi bi-search"></i></span>
+        <input type="text" class="form-control" placeholder="Rechercher (patient, médecin, motif)..."
+               [(ngModel)]="recherche">
+      </div>
+    </div>
+  </div>
+
+  <!-- Loader -->
+  <div *ngIf="loading" class="text-center py-5">
+    <div class="spinner-border" role="status"></div>
+  </div>
+
+  <!-- Table -->
+  <div *ngIf="!loading" class="table-responsive">
+    <table class="table table-hover">
+      <thead class="table-dark">
+        <tr>
+          <th>Patient</th>
+          <th>Médecin</th>
+          <th>Date</th>
+          <th>Heure</th>
+          <th>Motif</th>
+          <th>Statut</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let rdv of filteredRdvs">
+          <td>{{ rdv.patientNom }}</td>
+          <td>{{ rdv.medecinNom }}</td>
+          <td>{{ rdv.date }}</td>
+          <td>{{ rdv.heure }}</td>
+          <td>{{ rdv.motif }}</td>
+          <td>
+            <span class="badge"
+              [class.bg-success]="rdv.statut === 'terminé'"
+              [class.bg-warning]="rdv.statut === 'planifié'"
+              [class.bg-danger]="rdv.statut === 'annulé'">
+              {{ rdv.statut }}
+            </span>
+          </td>
+          <td>
+            <button class="btn btn-sm btn-outline-primary me-1"
+                    data-bs-toggle="modal" data-bs-target="#rdvModal"
+                    (click)="openModal(rdv)">
+              <i class="bi bi-pencil"></i>
+            </button>
+            <button class="btn btn-sm btn-outline-danger" (click)="delete(rdv.id!)">
+              <i class="bi bi-trash"></i>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <div *ngIf="filteredRdvs.length === 0" class="text-center py-5 text-muted">
+      <i class="bi bi-calendar-x display-1 opacity-25"></i>
+      <p>Aucun rendez-vous trouvé</p>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="rdvModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">{{ editingId ? 'Modifier' : 'Ajouter' }} un rendez-vous</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="form">
+
+          <div class="mb-3">
+            <label class="form-label">Patient *</label>
+            <select class="form-select" formControlName="patientId">
+              <option value="">-- Sélectionner --</option>
+              <option *ngFor="let p of allPatients" [value]="p.id">{{ p.nom }} {{ p.prenom }}</option>
+            </select>
+          </div>
+
+          <!-- Select médecin — admin seulement -->
+          <div class="mb-3" *ngIf="userRole === 'admin'">
+            <label class="form-label">Médecin *</label>
+            <select class="form-select" formControlName="medecinId">
+              <option value="">-- Sélectionner --</option>
+              <option *ngFor="let m of medecins" [value]="m.id">Dr. {{ m.nom }} {{ m.prenom }}</option>
+            </select>
+          </div>
+
+          <!-- Médecin fixe — rôle médecin -->
+          <div class="mb-3" *ngIf="userRole === 'medecin'">
+            <label class="form-label">Médecin</label>
+            <div class="form-control bg-light d-flex align-items-center gap-2" style="cursor: not-allowed;">
+              <i class="bi bi-person-heart" style="color: var(--primary-teal-light);"></i>
+              <span>Dr. {{ getMedecinNomByUid(currentUserUid) }}</span>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col mb-3">
+              <label class="form-label">Date *</label>
+              <input type="date" class="form-control" formControlName="date">
+            </div>
+            <div class="col mb-3">
+              <label class="form-label">Heure *</label>
+              <input type="time" class="form-control" formControlName="heure">
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Motif *</label>
+            <input type="text" class="form-control" formControlName="motif" placeholder="Motif de la consultation">
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Statut</label>
+            <select class="form-select" formControlName="statut">
+              <option value="planifié">Planifié</option>
+              <option value="terminé">Terminé</option>
+              <option value="annulé">Annulé</option>
+            </select>
+          </div>
+
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+        <button type="button" class="btn btn-primary"
+                (click)="save()" [disabled]="form.invalid || submitting"
+                data-bs-dismiss="modal">
+          <span *ngIf="submitting" class="spinner-border spinner-border-sm me-1"></span>
+          {{ editingId ? 'Modifier' : 'Ajouter' }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

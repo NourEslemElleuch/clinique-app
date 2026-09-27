@@ -1,0 +1,101 @@
+/* Variables CSS LYNORA */
+:root {
+  --primary-teal-dark: #1a6b7a;
+  --primary-teal-light: #2a9db5;
+  --bg-light: #f8fafb;
+  --card-bg: #e8f0f2;
+  --text-dark: #1a2e35;
+}
+
+/* Reset et base */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: var(--bg-light);
+  color: var(--text-dark);
+  line-height: 1.6;
+}
+
+/* Scrollbar stylisée */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--card-bg);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--primary-teal-dark);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--primary-teal-light);
+}
+
+/* Animations fade-in */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.fade-in {
+  animation: fadeIn 0.5s ease-out;
+}
+
+/* Cartes hover */
+.card {
+  transition: all 0.3s ease;
+  border: none;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+}
+
+/* Boutons teal */
+.btn-primary {
+  background: linear-gradient(135deg, var(--primary-teal-dark), var(--primary-teal-light));
+  border: none;
+  transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(26, 107, 122, 0.4);
+}
+
+/* Spinner teal */
+.spinner-border {
+  color: var(--primary-teal-dark);
+}
+
+/* Tables hover */
+.table-hover tbody tr:hover {
+  background-color: rgba(42, 157, 181, 0.1);
+}
+
+/* Badges */
+.badge-info {
+  background-color: var(--primary-teal-light);
+}
+
+/* ── Icônes Bootstrap dans les titres h1/h2/h3 ── */
+h1 .bi, h2 .bi, h3 .bi {
+  color: var(--primary-teal-light);
+}
+
+/* Responsive utilities */
+@media (max-width: 768px) {
+  .table-responsive {
+    font-size: 0.9rem;
+  }
+}

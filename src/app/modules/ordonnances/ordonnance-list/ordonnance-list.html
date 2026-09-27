@@ -1,0 +1,114 @@
+<div class="container-fluid px-4 py-4">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2><i class="bi bi-file-medical "></i> Ordonnances</h2>
+    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#ordonnanceModal" (click)="openModal()">
+      <i class="bi bi-plus-circle"></i> Ajouter ordonnance
+    </button>
+  </div>
+
+  <!-- Recherche -->
+  <div class="row mb-4">
+    <div class="col-md-6">
+      <div class="input-group">
+        <span class="input-group-text"><i class="bi bi-search"></i></span>
+        <input type="text" class="form-control" placeholder="Rechercher (patient, médecin, médicament)..."
+               [(ngModel)]="recherche">
+      </div>
+    </div>
+  </div>
+
+  <!-- Loader -->
+  <div *ngIf="loading" class="text-center py-5">
+    <div class="spinner-border text-primary" role="status"></div>
+  </div>
+
+  <!-- Table -->
+  <div *ngIf="!loading" class="table-responsive">
+    <table class="table table-hover">
+      <thead class="table-dark">
+        <tr>
+          <th>Patient</th>
+          <th>Médecin</th>
+          <th>Date</th>
+          <th>Médicaments</th>
+          <th>Instructions</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let ord of filteredOrdonnances">
+          <td>{{ ord.patientNom }}</td>
+          <td>{{ ord.medecinNom }}</td>
+          <td>{{ ord.date }}</td>
+          <td>{{ ord.medicaments }}</td>
+          <td>{{ ord.instructions }}</td>
+          <td>
+            <button class="btn btn-sm btn-outline-primary me-1"
+                    data-bs-toggle="modal" data-bs-target="#ordonnanceModal"
+                    (click)="openModal(ord)">
+              <i class="bi bi-pencil"></i>
+            </button>
+            <button class="btn btn-sm btn-outline-danger" (click)="delete(ord.id!)">
+              <i class="bi bi-trash"></i>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <div *ngIf="filteredOrdonnances.length === 0" class="text-center py-5 text-muted">
+      <i class="bi bi-file-x display-1 opacity-25"></i>
+      <p>Aucune ordonnance trouvée</p>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="ordonnanceModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">{{ editingId ? 'Modifier' : 'Ajouter' }} une ordonnance</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="form">
+          <div class="mb-3">
+            <label class="form-label">Patient *</label>
+            <select class="form-select" formControlName="patientId">
+              <option value="">-- Sélectionner --</option>
+              <option *ngFor="let p of patients" [value]="p.id">{{ p.nom }} {{ p.prenom }}</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Médecin *</label>
+            <select class="form-select" formControlName="medecinId">
+              <option value="">-- Sélectionner --</option>
+              <option *ngFor="let m of medecins" [value]="m.id">Dr. {{ m.nom }} {{ m.prenom }}</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Date *</label>
+            <input type="date" class="form-control" formControlName="date">
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Médicaments *</label>
+            <textarea class="form-control" formControlName="medicaments" rows="3"
+                      placeholder="Doliprane 1g, Amoxicilline 500mg..."></textarea>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Instructions</label>
+            <textarea class="form-control" formControlName="instructions" rows="2"
+                      placeholder="Prendre après les repas..."></textarea>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+        <button type="button" class="btn btn-primary" (click)="save()" [disabled]="form.invalid || submitting" data-bs-dismiss="modal">
+          <span *ngIf="submitting" class="spinner-border spinner-border-sm me-1"></span>
+          {{ editingId ? 'Modifier' : 'Ajouter' }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

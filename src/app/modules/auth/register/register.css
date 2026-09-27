@@ -1,0 +1,22 @@
+/* Styles spécifiques page inscription - utilise global styles.css */
+.input-group-outline {
+  position: relative;
+}
+
+.input-group-outline .form-control {
+  border: 2px solid transparent;
+  border-radius: 12px;
+  padding: 0.875rem 1rem;
+  transition: all 0.3s ease;
+  background: transparent;
+}
+
+.input-group-outline .form-control:focus {
+  border-color: var(--primary-teal-dark);
+  box-shadow: 0 0 0 0.2rem rgba(26, 107, 122, 0.15);
+  background: white;
+}
+
+.is-invalid {
+  border-color: #dc3545 !important;
+}

@@ -1,0 +1,18 @@
+/* Same styles */
+.table-hover tbody tr:hover {
+  background-color: rgba(0,123,255,.075);
+}
+
+.btn-group-sm .btn {
+  padding: 0.25rem 0.5rem;
+}
+
+.badge {
+  font-size: 0.8em;
+}
+
+@media (max-width: 768px) {
+  .table-responsive {
+    font-size: 0.875rem;
+  }
+}

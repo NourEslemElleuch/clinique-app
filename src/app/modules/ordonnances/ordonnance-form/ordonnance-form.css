@@ -1,0 +1,12 @@
+/* Ordonnance Form Styles */
+app-ordonnance-form {
+  padding: 1rem;
+}
+
+.form-control {
+  margin-bottom: 1rem;
+}
+
+.btn {
+  margin-right: 0.5rem;
+}
